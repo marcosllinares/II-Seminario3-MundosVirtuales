@@ -149,6 +149,103 @@ Se puede hacer construyendo una matriz de transformación global a partir de las
 
 16. **Crea una escena en Unity con los siguientes elementos: cámara principal, plano base (como suelo) y tres cubos de distinto color (rojo, verde, azul) colocados en posiciones distintas en el espacio. Realiza un pequeño script de depuración adjunto a la cámara que permita visualizar en consola o en pantalla las matrices de transformación (Model, View, Projection) y sus resultados sobre un vértice de cada cubo.**
 
+Lo que hemos hecho para resolver el ejercicio es crear los 3 cubos, situarlos en distintas posiciones y añadirle a la cámara el siguiente Script:
+
+```C#
+using UnityEngine;
+
+public class CameraDebugMatricesConsole : MonoBehaviour
+{
+    [Header("Referencias a los cubos")]
+    public Transform cubeRed;
+    public Transform cubeGreen;
+    public Transform cubeBlue;
+
+    [Header("Opciones de depuración")]
+    public bool logEveryFrame = false;     // Si es true, muestra cada frame
+    public KeyCode logKey = KeyCode.Space; // Si es false, muestra al pulsar la tecla
+
+    private Camera cam;
+
+    void Awake()
+    {
+        cam = GetComponent<Camera>();
+        if (cam == null)
+        {
+            Debug.LogError("Este script debe estar en un GameObject con Camera.");
+        }
+    }
+
+    void Update()
+    {
+        if (cam == null) return;
+
+        if (logEveryFrame || Input.GetKeyDown(logKey))
+        {
+            // Matrices de la cámara
+            Matrix4x4 viewMatrix = cam.worldToCameraMatrix;
+            Matrix4x4 projMatrix = cam.projectionMatrix;
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            sb.AppendLine("=== MATRICES DE LA CÁMARA ===");
+            sb.AppendLine("View (world -> camera):");
+            sb.AppendLine(viewMatrix.ToString());
+            sb.AppendLine();
+            sb.AppendLine("Projection (camera -> clip):");
+            sb.AppendLine(projMatrix.ToString());
+            sb.AppendLine();
+
+            // Procesar cada cubo
+            if (cubeRed != null)
+                AppendCubeInfo(sb, cubeRed, "Cubo ROJO", viewMatrix, projMatrix);
+
+            if (cubeGreen != null)
+                AppendCubeInfo(sb, cubeGreen, "Cubo VERDE", viewMatrix, projMatrix);
+
+            if (cubeBlue != null)
+                AppendCubeInfo(sb, cubeBlue, "Cubo AZUL", viewMatrix, projMatrix);
+
+            Debug.Log(sb.ToString());
+        }
+    }
+
+    void AppendCubeInfo(System.Text.StringBuilder sb, Transform cube, string label,
+                        Matrix4x4 viewMatrix, Matrix4x4 projMatrix)
+    {
+        MeshFilter mf = cube.GetComponent<MeshFilter>();
+        if (mf == null || mf.sharedMesh == null) return;
+
+        Mesh mesh = mf.sharedMesh;
+        if (mesh.vertexCount == 0) return;
+
+        // Tomamos el primer vértice del cubo (en espacio local)
+        Vector3 vLocal = mesh.vertices[0];
+
+        // Matriz Model (object -> world)
+        Matrix4x4 modelMatrix = cube.localToWorldMatrix;
+
+        // Transformaciones sucesivas
+        Vector3 vWorld = modelMatrix.MultiplyPoint3x4(vLocal);     // Model
+        Vector3 vView = viewMatrix.MultiplyPoint3x4(vWorld);       // View
+        Vector3 vClip = projMatrix.MultiplyPoint(vView);           // Projection
+
+        sb.AppendLine("=== " + label + " ===");
+        sb.AppendLine("Model (object -> world):");
+        sb.AppendLine(modelMatrix.ToString());
+        sb.AppendLine();
+        sb.AppendLine("Vértice (local): " + vLocal);
+        sb.AppendLine("Tras Model (world): " + vWorld);
+        sb.AppendLine("Tras View (camera space): " + vView);
+        sb.AppendLine("Tras Projection (clip space): " + vClip);
+        sb.AppendLine();
+    }
+}
+
+```
+
+Después, en el inspector de la propia cámara, añadimos las referencias a los cubos y marcamos la opción `Log Every Frame` para que me aparezca la información en cada frame por consola. El resultado se muestra por consola como se muestra en las siguientes imágenes: 
+
 ![](https://i.imgur.com/vK1lKXp.jpeg)
 
 ![](https://i.imgur.com/ksz8gwa.jpeg)
