@@ -154,5 +154,40 @@ Se puede hacer construyendo una matriz de transformación global a partir de las
 ![](https://i.imgur.com/ksz8gwa.jpeg)
 
 17. **Dibujar en un programa de dibujo el recorrido de las coordenadas de un vértice específico del cubo rojo: Local → World → Camera/View → Clip → NDC → Viewport. Indicar cómo cambia su valor en cada espacio. Aplicar la transformación manualmente a un punto (por ejemplo, el vértice (0.5, 0.5, 0.5)) y registrar los resultados paso a paso.**
+
+
+![](https://i.imgur.com/sHrUP6T.png)
+
+La idea es: mismo punto físico, pero sus coordenadas cambian porque estás cambiando el sistema de referencia y aplicando proyección.
+
+Qué es cada espacio, explicado:
+
+1. **Local (Object Space)**  
+	Coordenadas dentro del cubo.
+	- Ejemplo: vértice (0.5, 0.5, 0.5) es una esquina del cubo en su propio sistema.
+2. **World Space**  
+	Coordenadas en el mundo de la escena.
+	- Aplicas la Model Matrix (posición, rotación y escala del cubo).
+	- Sirve para “colocar” el cubo en la escena.
+3. **Camera / View Space**  
+	Coordenadas vistas desde la cámara.
+	- Aplicas la View Matrix (posición y orientación de la cámara).
+	- Es como mover el mundo para que la cámara quede en el origen mirando hacia adelante.
+4. **Clip Space**  
+	Resultado de aplicar la Projection Matrix (perspectiva u ortográfica).
+	- Aquí ya se ha aplicado FOV, planos near/far, etc.
+	- El punto está en forma homogénea: (x, y, z, w).
+5. **NDC (Normalized Device Coordinates)**  
+	Divides por w:
+	$$
+	(x_{ndc}, y_{ndc}, z_{ndc}) = \left(\frac{x}{w}, \frac{y}{w}, \frac{z}{w}\right)
+	$$
+	- Ahora las coordenadas están normalmente entre \[-1, 1\].
+6. **Viewport (Screen Space)**  
+	Mapeas de \[-1, 1\] → píxeles de la pantalla.
+	- Si la pantalla es de 800×600:
+		- $x_{screen} = \frac{x_{ndc} + 1}{2} \cdot 800$
+		- $y_{screen} = \frac{y_{ndc} + 1}{2} \cdot 600$
+
 18. **Mover o rotar uno de los cubos y mostrar cómo cambian los valores de su matriz de modelo. Rotar la cámara y mostrar cómo se modifica la matriz de vista. Cambiar entre proyección ortográfica y perspectiva y comparar las diferencias numéricas en la matriz de proyección.**
 
