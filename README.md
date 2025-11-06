@@ -39,7 +39,15 @@ Modicado Clipping Plane (Far) a `3` para que quede fuera del volumen de la vista
 
 6. **Es correcta la siguiente afirmación: Para realizar la proyección al espacio 2D, en el inspector de la cámara, cambiaremos el valor de projection, asignándole el valor de orthographic**
 
-Sí.
+Sí, la afirmación es correcta.
+
+En Unity, el componente **Camera** puede proyectar la escena en dos modos distintos:
+
+- **Perspective** (por defecto): simula la visión humana, donde los objetos lejanos se ven más pequeños.
+- **Orthographic**: elimina el efecto de perspectiva, manteniendo el mismo tamaño para todos los objetos sin importar su distancia.
+
+Por tanto, **si queremos proyectar la escena en un espacio 2D**, debemos cambiar en el **Inspector de la cámara** el campo **Projection** de `Perspective` a **`Orthographic`**.  
+Esto hace que los rayos de visión sean **paralelos** en lugar de converger hacia un punto, lo cual es ideal para juegos o visualizaciones 2D, ya que las coordenadas en pantalla se corresponden linealmente con las coordenadas del mundo.
 
 7. **Especifica las rotaciones que se han indicado en los ejercicios previos con la utilidad quaternion.**
 
@@ -256,7 +264,7 @@ public class CameraDebugMatricesConsole : MonoBehaviour
 
 Después, en el inspector de la propia cámara, añadimos las referencias a los cubos y marcamos la opción `Log Every Frame` para que me aparezca la información en cada frame por consola. El resultado se muestra por consola como se muestra en las siguientes imágenes: 
 
-![](https://i.imgur.com/vK1lKXp.jpeg)
+![](https://i.imgur.com/qbySHVo.jpeg)
 
 ![](https://i.imgur.com/ksz8gwa.jpeg)
 
