@@ -285,10 +285,8 @@ Qué es cada espacio, explicado:
 	- Aquí ya se ha aplicado FOV, planos near/far, etc.
 	- El punto está en forma homogénea: (x, y, z, w).
 5. **NDC (Normalized Device Coordinates)**  
-	Divides por w:
-	$$
-	(x_{ndc}, y_{ndc}, z_{ndc}) = \left(\frac{x}{w}, \frac{y}{w}, \frac{z}{w}\right)
-	$$
+	- Divides por w:
+	- $(x_{ndc}, y_{ndc}, z_{ndc}) = \left(\frac{x}{w}, \frac{y}{w}, \frac{z}{w}\right)$
 	- Ahora las coordenadas están normalmente entre \[-1, 1\].
 6. **Viewport (Screen Space)**  
 	Mapeas de \[-1, 1\] → píxeles de la pantalla.
