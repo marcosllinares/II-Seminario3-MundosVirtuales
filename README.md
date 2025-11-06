@@ -21,7 +21,17 @@ No se obtiene el mismo resultado ya que translate usa los ejes locales del objet
 
 3. **Sitúa la esfera de radio 1 en el campo de visión de la cámara y configura un volumen de vista que la recorte parcialmente.**
 
+Modicado Clipping Plane (Far) a `4.5` para que recorte parcialmente la esfera de radio 1
+
+![|400](https://i.imgur.com/zXdWjf3.jpeg)
+
 4. **Sitúa la esfera de radio 1 en el campo de visión de la cámara y configura el volumen de vista para que la deje fuera de la vista.**
+
+Modicado Clipping Plane (Far) a `3` para que quede fuera del volumen de la vista a la esfera de radio 1
+
+![|400](https://i.imgur.com/tL32zTA.jpeg)
+
+![|400](https://i.imgur.com/fLi9oxX.jpeg)
 
 5. **Como puedes aumentar el ángulo de la cámara. Qué efecto tiene disminuir el ángulo de la cámara.**
 
