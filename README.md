@@ -14,8 +14,10 @@
 
 2. **Como trasladarías la cámara 2 metros en cada uno de los ejes y luego la rotas 30º alrededor del eje Y?. Rota la cámara alrededor del eje Y 30ª y desplázala 2 metros en cada uno de los ejes. ¿Obtendrías el mismo resultado en ambos casos?. Justifica el resultado**
 
+```C#
 transform.Translate(2, 2, 2);
 transform.Rotate(0, 30, 0);
+```
 
 No se obtiene el mismo resultado ya que translate usa los ejes locales del objeto, que cambian al realizar la rotación.
 
